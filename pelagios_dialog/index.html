@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/jq/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
+</head>
+<body>
+    <!-- write pleiades ID as value for element button (e.g.: 118813 => Ladenburg; 197488 => Salonae) -->
+    <button id="pelagios" value="118813">Related content from Pelagios</button>
+    <div id="pelagios_dialog" style="display:none"></div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#pelagios').click(function() {
+                var pleiades_id = $(this).attr("value");
+                var pleiades_uri = "http://pelagios.org/peripleo/places/http%3A%2F%2Fpleiades.stoa.org%2Fplaces%2F" + pleiades_id;
+                var strBuffer = "";
+                var link = "";
+                $.ajax({
+                    type: "GET",
+                    url: pleiades_uri,
+                    dataType: "json",
+                    success: function (data) {
+                        strBuffer = "<p>About this place:</p>";
+                        $.each(data.matches, function(key, value) {
+                            strBuffer += "<li><a href=\"" + data.network.nodes[key].uri + "\">" + data.network.nodes[key].source_gazetteer + "</a></li>";
+                            $.each(data.network.edges, function(k, v) {
+                                if (key == v.source){
+                                    strBuffer += "<a style=\"padding-left:2em;\" href=\"" + data.network.nodes[v.target].uri + "\">" + data.network.nodes[v.target].uri + "</a><br>";
+                                }
+                            });
+                        });
+                        strBuffer += "<p>Objects & fotos linked to this place:</p>";
+                        $.each(data.referenced_in, function(key, value) {
+                            link = "http://pelagios.org/peripleo/map#places=http:%2F%2Fpleiades.stoa.org%2Fplaces%2F" + pleiades_id + "&datasets=" + value.identifier + "&6f=open";
+                            strBuffer += "<li><a href=\""+ link +"\">" + value.title + " (" + value.count + ")</a></li>";
+                        });
+                        $('#pelagios_dialog').html(strBuffer);
+                    },
+                    error: function (data) {
+                        $('#pelagios_dialog').html("Error while retrieving data from pelagios.org!");
+                    }
+                });
+                $('#pelagios_dialog').dialog({
+                        width:550,
+                        title:"Related content from Pelagios"
+                });
+                $('#pelagios_dialog').dialog('open');
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

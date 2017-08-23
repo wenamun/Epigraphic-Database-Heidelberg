@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Römische Meilensteine</title>
+    <link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="milestones.js"></script>
+    <script src="milestonesUtilities.js"></script>
+    <style type="text/css">
+        #mapwrap{
+            position: relative;
+            height: 100%;
+            overflow:hidden;
+        }
+
+        #map {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            border:1px solid black;
+        }
+
+        #mapinst{
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            width: 250px;
+            height: 90%;
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="mapwrap">
+        <div id="map"></div>
+        <div id="mapinst"><h3>Römische Meilensteine</h3><p>Klicken Sie auf die Marker, um zusätzliche Informationen über einen Meilenstein zu erhalten. Zoom- und Navigations-Werkzeuge befinden sich links-oben auf der Karte.<br>Falls der antike lateinische oder griechische Text eine Entfernung zu einer Stadt erwähnt, kann man sich diese Entfernung als Kreis um den Fundort des Meilensteins anzeigen lassen.</p>
+            <p>
+                <img src="/images/circle_blue.png"> Meilensteine</br>
+                <img src="/images/circle_red.png"> Leugensteine
+            </p>
+            <p>
+                <label><input type="checkbox" id="cb_showCircles" onclick="toggleCircles(this);">Entfernungen als Kreise anzeigen</label>
+            </p>
+            <p>
+                <label><input type="checkbox" id="cb_2bc" onclick="changeMarkerVisibility(this)" checked="checked">2. Jh. v. Chr.<br></label>
+                <label><input type="checkbox" id="cb_1bc" onclick="changeMarkerVisibility(this)" checked="checked">1. Jh. v. Chr.<br></label>
+                <label><input type="checkbox" id="cb_1ad" onclick="changeMarkerVisibility(this)" checked="checked">1. Jh. n. Chr.<br></label>
+                <label><input type="checkbox" id="cb_2ad" onclick="changeMarkerVisibility(this)" checked="checked">2. Jh. n. Chr.<br></label>
+                <label><input type="checkbox" id="cb_3ad" onclick="changeMarkerVisibility(this)" checked="checked">3. Jh. n. Chr.<br></label>
+                <label><input type="checkbox" id="cb_4ad" onclick="changeMarkerVisibility(this)" checked="checked">4. Jh. n. Chr.<br></label>
+                <label><input type="checkbox" id="cb_5ad" onclick="changeMarkerVisibility(this)" checked="checked">5. Jh. n. Chr.<br></label>
+                <label><input type="checkbox" id="cb_undated" onclick="changeMarkerVisibility(this)" checked="checked">undatiert</label>
+            </p>
+            <p>
+                 <div style="font-size:.8em;border-top: 1px solid #ccc; color:#333;">Daten:  <a href="edh-www.adw.uni-heidelberg.de" style="background-repeat: no-repeat;background-position: left center;padding-left: 16px; background-image: url('/images/external_link.gif');color:#333;text-decoration: none;" target="_blank">Epigraphische Datenbank Heidelberg</a><br>
+                Karte:  <a href="http://dare.ht.lu.se/" style="background-repeat: no-repeat;background-position: left center;padding-left: 16px; background-image: url('/images/external_link.gif');color:#333;text-decoration: none;" target="_blank">DARE</a></div>
+            </p>
+        </div>
+    </div>
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        _paq.push(["trackPageView"]);
+        _paq.push(["enableLinkTracking"]);
+
+        (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://edh-www.adw.uni-heidelberg.de/piwik/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "1"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+  </body>
+</html>
