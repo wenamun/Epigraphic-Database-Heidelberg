@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Epigraphic Database Heidelberg">
+    <title>Epigraphic Database Heidelberg</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="css/layouts/side-menu.css">
+    <!--<![endif]-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/jq/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
+    
+</head>
+<body>
+
+<div id="layout">
+    <a href="#menu" id="menuLink" class="menu-link">
+        <span></span>
+    </a>
+
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="#">EDH</a>
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item" class="menu-item-divided pure-menu-selected">
+                    <a href="#" class="pure-menu-link">Search</a>
+                </li>
+                <li class="pure-menu-item"><a href="lexicon.php" class="pure-menu-link">Glossar</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="main">
+        <div class="header">
+            <h1>Epigraphic Database Heidelberg</h1>
+            <h2>Lemma Search</h2>
+        </div>
+
+        <div class="content">
+            <h2 class="content-subhead">How to use it</h2>
+            <div>
+            <p>
+                Enter a base form of a word, all inflected forms will be returned as result. After entering three letters the autocomplete will guide you through all lemmatized words.
+            </p>
+
+            <h2 class="content-subhead">Search</h2>
+            <p>
+                <input type="text" placeholder="base form" id="lemma" class="autocomplete" style="padding:0.4em">
+                <button id="searchLemma" class="pure-button pure-button-primary">Search...</button>
+            </p>
+            </div>
+            <h2 class="content-subhead">Results</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/ui.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("input#lemma").autocomplete({
+        source: "/cgi-bin/solrAutocompletePos.pl",
+        minLength: 3,
+        delay: 0
+    });
+    $("#searchLemma").on('click',function(event){
+            var l = $("#lemma").val();
+            console.log("Suche nach " + l);
+            console.log("searchstring: " + l);
+            $.ajax({
+                url:"/cgi-bin/solrSearchPos.pl",
+                type:"post",
+                data:{lemma: l},
+                success: function(response){
+                    $("div#results").empty().append(response);
+                }
+            });
+    });
+    $("#lemma").on('keyup',function(event){
+        if(event.keyCode == 13) {
+            var l = $("#lemma").val();
+            console.log("Suche nach " + l);
+            console.log("searchstring: " + l);
+            $.ajax({
+                url:"/cgi-bin/solrSearchPos.pl",
+                type:"post",
+                data:{lemma: l},
+                success: function(response){
+                    $("div#results").empty().append(response);
+                }
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
